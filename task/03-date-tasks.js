@@ -22,7 +22,7 @@
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
 function parseDataFromRfc2822(value) {
-   throw new Error('Not implemented');
+   return new Date(value);
 }
 
 /**
@@ -37,7 +37,7 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-   throw new Error('Not implemented');
+   return new Date(value);
 }
 
 
@@ -56,7 +56,17 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-   throw new Error('Not implemented');
+   let currYear = date.getFullYear();
+   if(currYear % 4 !== 0) {
+      return false;
+   }
+   if (currYear % 100 !== 0) {
+      return true;
+   }
+   if (currYear % 400 !== 0) {
+      return false;
+   }
+   return true;
 }
 
 
@@ -76,7 +86,37 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-   throw new Error('Not implemented');
+   let spanMs = endDate.getTime() - startDate.getTime();
+   let resultMS = [];
+   let result = [];
+   let tempResult = spanMs % 1000;
+   let ms = tempResult;
+   if (ms < 10) {
+      ms = '00' + ms;
+   } else if (ms < 100) {
+      ms = '0' + ms;
+   }
+   resultMS.push(ms);
+   tempResult = (spanMs - tempResult) / 1000;
+   let secs = tempResult % 60;
+   tempResult = (tempResult - secs) / 60;
+   if (secs < 10) {
+      secs = '0'+ secs;
+   }
+   let mins = tempResult % 60;
+   tempResult = (tempResult - mins) / 60;
+   if (mins < 10) {
+      mins = '0'+ mins;
+   }
+   let hours = tempResult;
+   if (hours < 10) {
+      hours = '0'+ hours;
+   }
+   result.push(hours, mins, secs);
+   return result.join(':') + '.' + resultMS.join();
+
+
+   
 }
 
 
@@ -94,7 +134,23 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
+    let mins = date.getUTCMinutes();
+    let minAngle = 6 * mins;
+    while (minAngle > 180) {
+      minAngle -= 180;
+   }
+    let hours = date.getUTCHours();
+    if (hours > 12) {
+      hours -= 12;
+    }
+    let hourAngle = 0.5 * (60 * hours + mins);
+    while (hourAngle > 180) {
+      hourAngle -= 180;
+   }
+    if(minAngle > hourAngle) {
+      return (minAngle - hourAngle) * Math.PI / 180 ;
+    }
+    return (hourAngle - minAngle) * Math.PI / 180 ;
 }
 
 
