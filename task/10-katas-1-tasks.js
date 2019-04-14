@@ -19,6 +19,7 @@
 function createCompassPoints() {
     throw new Error('Not implemented');
     var sides = ['N','E','S','W'];  // use array of cardinal directions only!
+
 }
 
 
@@ -88,7 +89,36 @@ function* expandBraces(str) {
  *
  */
 function getZigZagMatrix(n) {
-    throw new Error('Not implemented');
+    let result = [];
+    for (let i = 0; i < n; i++) {
+        result[i] = [];
+    }
+          
+    let x = 1;
+    let y = 1;
+    for (let i = 0; i < n * n; i++) {
+        result[x - 1][y - 1] = i;
+        if ((x + y) % 2 === 0) {
+            if (y < n) {
+                y++;
+            } else {
+                x += 2;
+            }      
+            if (x > 1) {
+                x--;
+            }
+        } else {
+            if (x < n) {
+                x++;
+            } else {
+                y += 2;
+            }    
+            if (y > 1) {
+                y--;
+            }
+        }
+    }
+    return result;
 }
 
 
