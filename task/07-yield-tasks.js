@@ -74,6 +74,7 @@ function* getFibonacciSequence() {
         fn1 = 0;
         fn2 = 1;
     }
+    }
   }
 
 
